@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:yasam/results.dart';
+import 'package:yasam/user_data.dart';
 
 import 'const.dart';
 import 'gendericon.dart';
@@ -35,70 +37,19 @@ class _InputPageState extends State<InputPage> {
               children: [
                 Expanded(
                   child: MyContainer(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        RotatedBox(
-                          quarterTurns: -1,
-                          child: Text(
-                            '$boy',
-                            style: kMetinSitili,
-                          ),
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        RotatedBox(
-                          quarterTurns: -1,
-                          child: Text(
-                            '170',
-                            style: kSayiiSitili,
-                          ),
-                        ),
-                        SizedBox(
-                          width: 20,
-                        ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            ButtonTheme(
-                              minWidth: 20,
-                              child: OutlinedButton(
-                                style: OutlinedButton.styleFrom(
-                                  side: BorderSide(color: Colors.blue),
-                                ),
-                                onPressed: () {
-                                  print("object");
-                                },
-                                child: Icon(
-                                  FontAwesomeIcons.plus,
-                                  size: 10,
-                                ),
-                              ),
-                            ),
-                            ButtonTheme(
-                              minWidth: 36,
-                              child: OutlinedButton(
-                                style: OutlinedButton.styleFrom(
-                                  side: BorderSide(color: Colors.blue),
-                                ),
-                                onPressed: () {
-                                  print("object");
-                                },
-                                child: Icon(
-                                  FontAwesomeIcons.minus,
-                                  size: 10,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
+                    child: buildColumnOutlineButton(
+                      'Boy',
+                      '$boy',
                     ),
                   ),
                 ),
                 Expanded(
-                  child: MyContainer(),
+                  child: MyContainer(
+                    child: buildColumnOutlineButton(
+                      'Kilo',
+                      '$kilo',
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -190,8 +141,88 @@ class _InputPageState extends State<InputPage> {
               ],
             ),
           ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ResultPage(UserData(
+                            kilo: kilo,
+                            boy: boy,
+                            seciliCinsiyet: seciliCinsiyet,
+                            icilenSigara: icilenSigara,
+                            yapilanSpor: yapilanSpor,
+                          ))));
+            },
+            child: Text('HESAPLA'),
+            style: ElevatedButton.styleFrom(
+              primary: Colors.green,
+              minimumSize: Size(50, 50),
+              textStyle: TextStyle(
+                fontSize: 19,
+              ),
+            ),
+          ),
         ],
       ),
+    );
+  }
+
+  Column buildColumnOutlineButton(String titleText, String valueText) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          titleText,
+          style: kMetinSitili,
+        ),
+        Text(
+          titleText == 'Boy' ? boy.toString() : kilo.toString(),
+          style: kSayiiSitili,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ButtonTheme(
+              minWidth: 20,
+              child: OutlinedButton(
+                style: OutlinedButton.styleFrom(
+                  side: BorderSide(color: Colors.blue),
+                ),
+                onPressed: () {
+                  setState(() {
+                    titleText == 'Boy' ? boy++ : kilo++;
+                  });
+                },
+                child: Icon(
+                  FontAwesomeIcons.plus,
+                  size: 10,
+                ),
+              ),
+            ),
+            SizedBox(
+              width: 10,
+            ),
+            ButtonTheme(
+              minWidth: 36,
+              child: OutlinedButton(
+                style: OutlinedButton.styleFrom(
+                  side: BorderSide(color: Colors.blue),
+                ),
+                onPressed: () {
+                  setState(() {
+                    titleText == 'Boy' ? boy-- : kilo--;
+                  });
+                },
+                child: Icon(
+                  FontAwesomeIcons.minus,
+                  size: 10,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }
